@@ -9,12 +9,13 @@ import { IoMdClose } from "react-icons/io";
 
 const Navbar = () => {
   const [sideBar, setSideBar] = useState(false);
-  const toggleHandle = () => {
+  const toggleHandle = (e) => {
     setSideBar(!sideBar);
+    if (e.target === e.currentTarget) {
+      setSideBar(false);
+    }
   };
-  const [activeMenu,setActiveMenu] = useState('menu');
-
-
+  const [activeMenu, setActiveMenu] = useState("categories");
 
   const test = `flex gap-3 items-center relative after:absolute after:content-[''] after:w-[2px] after:-left-[12px] after:h-[70%] after:bg-[#CCCCCC] `;
   return (
@@ -43,7 +44,7 @@ const Navbar = () => {
           </form>
         </div>
 
-        <div className="col-span-1 hidden lg:flex gap-5 items-center">
+        <div className="col-span-1 hidden lg:flex gap-5 items-center justify-end">
           <div>
             {" "}
             <span className="text-3xl">
@@ -79,10 +80,14 @@ const Navbar = () => {
 
       {/* sidebar */}
       <div
-        className={`bg-black/30 w-full h-screen    absolute top-0 left-0 transform   ${!sideBar ? "-translate-x-full" : "translate-x-0"}`}
+        onClick={() => setSideBar(false)}
+        className={`bg-black/30 w-full test h-screen transition-opacity    absolute top-0 left-0 transform  duration-500  ${!sideBar ? "opacity-0 pointer-events-none" : "opacity-100 pointer-events-auto"}`}
       >
         <div
-          className={`bg-white transform transition-transform duration-300  max-w-2/3 h-full relative ${!sideBar ? "-translate-x-full" : "translate-x-0 "} `}
+          onClick={(e) => e.stopPropagation()}
+          className={`relative h-full w-2/3 max-w-[66%] bg-white transition-transform duration-500 ease-in-out ${
+            !sideBar ? "-translate-x-full" : "translate-x-0"
+          }`}
         >
           <span
             className="absolute -right-7 bg-white w-[30px] h-[30px] flex items-center justify-center top-0"
@@ -93,18 +98,26 @@ const Navbar = () => {
 
           <div>
             <Button
-              onClick={() => setActiveMenu("categories")}
+              click={() => setActiveMenu("categories")}
               styles={`w-1/2  text-black ${activeMenu === "categories" ? "border-b bg-green-50 border-b-green-500" : ""} text-sm p-3 text-[#777]`}
               content="Categories"
             />
             <Button
-              onClick={() => setActiveMenu("menu")}
+              click={() => setActiveMenu("menu")}
               styles={`w-1/2  text-black ${activeMenu === "menu" ? "border-b bg-green-50 border-b-green-500" : ""} text-sm p-3 text-[#777]`}
               content="menu"
             />
 
-
-            <h1 onClick={()=>alert('22')}>hey</h1>
+            {activeMenu === "menu" && (
+              <>
+                <p>Menu</p>
+              </>
+            )}
+            {activeMenu === "categories" && (
+              <>
+                <p>categories</p>
+              </>
+            )}
           </div>
         </div>
       </div>
